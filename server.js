@@ -10,7 +10,11 @@ var PORT = 3000;
 
 var app = express();
 
-app.use(logger("dev"));
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+
+mongoose.connect(MONGODB_URI);
+
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
@@ -19,39 +23,16 @@ app.set("view engine", "handlebars");
 
 mongoose.connect("mongo://localhost/unit18Populater", { useNewUrlParser: true });
 
-app.get("/scrape", function(req, res) {
-    axios.get("").then(function(response) {
-        var $ = cheerio.load(response.data);
+require("./models/index.js")
 
-        $("article h2").each(function(i, element) {
-            var result = {};
-            result.title = $(this)
-            .children("a")
-            .text();
-            result.link = $(this)
-            .children("a")
-            .attr("href");
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
-            db.article.create(result)
-            .then(function(dbarticle) {
-                console.log(dbarticle);
-            })
-            .catch(function(err) {
-                console.log(err);
-            });
-        });
+require("./routes/apiRoutes")(app);
+require("./routes/htmlRoutes")(app);
 
-        res.send("Scrape is done!");
-    });
+app.listen(PORT, function() {
+    console.log("App running on port " + PORT + "!");
 });
 
-app.get("/", function(req, res) {
-    res.render("home");
-});
-
-
-
-
-
-
-app.listen(3000);
+module.exports = app;
