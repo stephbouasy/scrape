@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Scraping With Mongoose</title>
     <style>
-      body { background-color: black; }
+      .body { background-color: black; }
       #wrapper {
         width: 960px;
         margin-left: auto;
@@ -16,11 +16,18 @@
 	    top:0;
         left:0;
         background-size: 10%;
+        max-width: 5px;
       }
       #title {
           color:aliceblue;
+          margin-left: 20%;
           font-size: 100px;
-          font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+          font-family: 'Open Sans', sans-serif;
+      }
+      #subtitle {
+        font-family: 'Open Sans', sans-serif;
+        margin-left: 25%;
+        color:#79D2D2;
       }
       #articles {
         display: inline-block;
@@ -47,17 +54,18 @@
       }
     </style>
   </head>
-  <body>
+  <body class="body">
     <div id="wrapper">
         <div id="logo">
-            <img src="https://www.ibt.org.uk/wp-content/uploads/2018/02/the-economist600.jpg">
+            <img src="https://www.ibt.org.uk/wp-content/uploads/2018/02/the-economist600.jpg" width="200" height="100" >
         </div>
       <h1 id="title">News Flash!</h1>
-      <h2><i>Scraped from The Economist</i></h2>
+      <h2 id="subtitle"><i>Scraped from The Economist</i></h2>
       <div id="articles"></div>
       <div id="notes"></div>
     </div>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="app.js"></script>
   </body>
