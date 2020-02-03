@@ -8,12 +8,16 @@ var cheerio = require("cheerio");
 var article = require("../models/article.js");
 
 router.get("/", function(req, res) {
-    request("http://www.theeconomist.com", function(error, response, html) {
+    res.redirect("/articles");
+});
+
+router.get("/scrape", function(req, res) {
+    request("http://www.economist.com", function(error, response, html) {
         var $ = cheerio.load(html);
         var titleArray = [];
 
         $(".c-entry-box--compact_title").each(function(i, element) {
-            var result{};
+       
 
             result.title = $(this)
             .children("a")
@@ -69,13 +73,13 @@ router.get("/articles-json", function(req, res) {
 });
 
 router.get("/clearAll", function(req, res) {
-    article.remove{{}, function(err, doc) {
+    article.remove({}, function(err, doc) {
         if (err) {
             console.log(err);
         } else {
             console.log("removed all articles");
         }
-    }};
+    });
     res.redirect("/articles-json");
 });
 
@@ -86,7 +90,7 @@ router.get("/readArticle/:id", function(req, res) {
         body: []
     };
 
-    article.findOne{( _id: articleId )}
+    article.findOne({ _id: articleId }) 
     .populate("comment")
     .exec(function(err, doc) {
         if (err) {
@@ -95,7 +99,7 @@ router.get("/readArticle/:id", function(req, res) {
             hbsObj.article = doc;
             var link = doc.link;
             request(link, function(error, response, html) {
-
+                var $ = cheerio.load(html);
                 $(".1-col_main").each(function(i, element) {
                     hbsObj.body = $(this)
                     .children(".c-entry-content")
@@ -104,21 +108,11 @@ router.get("/readArticle/:id", function(req, res) {
 
                     res.render("article", hbsObj);
                     return false;
-                }));
+                });
             });
         }
-    });
+    });    
 });
 
-router.post("/comment/:id", function(req, res) {
-    var user = req.body.name;
-    var content = req.body.comment;
-    var articleId = req.params.id;
-
-    var commentObj = {
-        name: user,
-        body: content
-    };
-})
 
 module.exports = router;
